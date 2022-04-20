@@ -143,12 +143,11 @@ class ActionsUserNavHistory
 	}
 
 	public function printTopRightMenu($parameters, &$object, &$action, $hookmanager) {
-		$usernavhist = '<div class="inline-block">';
-		$usernavhist.= '<div class="classfortooltip inline-block login_block_elem inline-block" style="padding: 0px; padding: 0px; padding-right: 3px !important;"><a href="/index.php?mainmenu=home&amp;leftmenu=home&amp;optioncss=print" target="_blank" rel="noopener noreferrer"><span class="fa fa-print atoplogin valignmiddle"></span></a></div>';
+		//$usernavhist = '<div class="inline-block">';
+		//$usernavhist.= '<div class="classfortooltip inline-block login_block_elem inline-block" style="padding: 0px; padding: 0px; padding-right: 3px !important;"><a href="/index.php?mainmenu=home&amp;leftmenu=home&amp;optioncss=print" target="_blank" rel="noopener noreferrer"><span class="fa fa-print atoplogin valignmiddle"></span></a></div>';
 		//$usernavhist.= '<span class="fa fa-print atoplogin valignmiddle"></span>';
-		$usernavhist.= '</div>';
-		$this->resprints = $usernavhist;
-		return 0;
-		return 0;
+		//$usernavhist.= '</div>';
+		//$this->resprints = $usernavhist;
+		//return 0;
 	}
 }
