@@ -126,8 +126,8 @@ class modUserNavHistory extends DolibarrModules
 		//$this->dirs = array("/usernavhistory/temp");
 
 		// Config pages. Put here list of php page, stored into usernavhistory/admin directory, to use to setup module.
-		//$this->config_page_url = array("setup.php@usernavhistory");
-		$this->config_page_url = array();
+//		$this->config_page_url = array("setup.php@usernavhistory");
+		$this->config_page_url = array("about.php@usernavhistory");
 
 		// Dependencies
 		// A condition to hide module

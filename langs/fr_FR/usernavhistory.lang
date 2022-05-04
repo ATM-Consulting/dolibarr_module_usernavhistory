@@ -25,13 +25,11 @@ ModuleUserNavHistoryDesc = Affiche les derniers éléments consultés par l'util
 #
 # Admin page
 #
-UserNavHistorySetup = UserNavHistory setup
+UserNavHistorySetup = Réglages du module Historique navigation utilisateur
 Settings = Settings
-UserNavHistorySetupPage = UserNavHistory setup page
-USERNAVHISTORY_MYPARAM1 = My param 1
-USERNAVHISTORY_MYPARAM1Tooltip = My param 1 tooltip
-USERNAVHISTORY_MYPARAM2=My param 2
-USERNAVHISTORY_MYPARAM2Tooltip=My param 2 tooltip
+UserNavHistorySetupPage = Réglages du module Historique navigation utilisateur
 
 
 LastNElementViewed=Derniers %s éléments consultés
+
+USERNAVHISTORY_MAX_ELEMENT_NUMBER = Nombre d'éléments maximum affichés sur le fil d'Ariane

@@ -27,18 +27,14 @@ ModuleUserNavHistoryDesc = Displays last viewed elements for a user
 #
 UserNavHistorySetup = User browsing history setup
 Settings = Settings
-UserNavHistorySetupPage = UserNavHistory setup page
-USERNAVHISTORY_MYPARAM1 = My param 1
-USERNAVHISTORY_MYPARAM1Tooltip = My param 1 tooltip
-USERNAVHISTORY_MYPARAM2=My param 2
-USERNAVHISTORY_MYPARAM2Tooltip=My param 2 tooltip
+UserNavHistorySetupPage = Réglage du module Historique de navigation utilisateur
 
 
 #
 # About page
 #
 About = About
-UserNavHistoryAbout = About UserNavHistory
-UserNavHistoryAboutPage = UserNavHistory about page
+UserNavHistoryAbout = A propos du module Historique de navigation utilisateur
+UserNavHistoryAboutPage = A propos du module Historique de navigation utilisateur
 
 LastNElementViewed=Last %s element viewed
