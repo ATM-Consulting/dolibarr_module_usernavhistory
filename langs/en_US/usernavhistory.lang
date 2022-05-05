@@ -30,11 +30,13 @@ Settings = Settings
 UserNavHistorySetupPage = Réglage du module Historique de navigation utilisateur
 
 
+LastNElementViewed = Last %s element viewed
+
+USERNAVHISTORY_MAX_ELEMENT_NUMBER = Displayed items in breadcrumb
+
 #
 # About page
 #
 About = About
-UserNavHistoryAbout = A propos du module Historique de navigation utilisateur
-UserNavHistoryAboutPage = A propos du module Historique de navigation utilisateur
-
-LastNElementViewed=Last %s element viewed
+UserNavHistoryAbout = About User browsing history
+UserNavHistoryAboutPage = About User browsing history
