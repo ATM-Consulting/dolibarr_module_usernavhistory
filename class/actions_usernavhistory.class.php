@@ -136,7 +136,7 @@ class ActionsUserNavHistory
 
 		$divStart = '<div class="usernavhistory">';
 		$divEnd = '</div>';
-
+		$hookmanager->resPrint = null; // Pour gerer le hookception
 		$this->resprints = $divStart . $divUNH . $divEnd;
 		//var_dump($conf);exit;
 		return 1;

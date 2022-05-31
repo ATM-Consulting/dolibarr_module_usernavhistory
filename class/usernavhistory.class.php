@@ -259,7 +259,9 @@ class UserNavHistory extends CommonObject
 				$record->setVarsFromFetchObj($obj);
 				$record->object = $this->getObjectByElement($record->element_type, $record->element_id);
 
-				$records[$record->id] = $record;
+				if($record->object){
+					$records[$record->id] = $record;
+				}
 
 				$i++;
 			}
@@ -707,7 +709,9 @@ class UserNavHistory extends CommonObject
 				if (class_exists($classname)) {
 					$obj = new $classname($db);
 					if(!empty($elementid)) {
-						$obj->fetch($elementid);
+						if($obj->fetch($elementid) < 1){
+							return 0;
+						}
 					}
 					return $obj;
 				}

@@ -95,11 +95,17 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 $head = usernavhistoryAdminPrepareHead();
 print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'usernavhistory@usernavhistory');
 
-dol_include_once('/usernavhistory/core/modules/modUserNavHistory.class.php');
-$tmpmodule = new modUserNavHistory($db);
-print $tmpmodule->getDescLong();
+
+require_once __DIR__ . '/../class/techatm.class.php';
+$techATM = new \userNavHistory\TechATM($db);
+
+require_once __DIR__ . '/../core/modules/modUserNavHistory.class.php';
+$moduleDescriptor = new modUserNavHistory($db);
+
+print $techATM->getAboutPage($moduleDescriptor);
 
 // Page end
 print dol_get_fiche_end();
+
 llxFooter();
 $db->close();
