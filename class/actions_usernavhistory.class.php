@@ -148,6 +148,6 @@ class ActionsUserNavHistory
 		//$usernavhist.= '<span class="fa fa-print atoplogin valignmiddle"></span>';
 		//$usernavhist.= '</div>';
 		//$this->resprints = $usernavhist;
-		//return 0;
+		return 0;
 	}
 }
