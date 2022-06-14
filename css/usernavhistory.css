@@ -29,3 +29,12 @@
 	padding: 0 5px;
 	color: #ccc;
 }
+
+
+.usernavhistory .breadcrumb img{
+	max-height: 16px;
+}
+
+.breadcrumb > li a img{
+	vertical-align: middle;
+}
