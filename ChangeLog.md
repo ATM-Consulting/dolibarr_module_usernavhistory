@@ -2,5 +2,6 @@
 
 ## 1.0
 
+- FIX : object picto max size *14/06/2022* - 1.0.2
 - FIX : Do not display deleted elements *05/05/2022* - 1.0.1
 Initial version
