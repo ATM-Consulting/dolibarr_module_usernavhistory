@@ -115,7 +115,7 @@ class ActionsUserNavHistory
 
 	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
 		global $user, $conf, $langs;
-		$print = GETPOST('optioncss');
+		$print = GETPOST('optioncss', 'alphanohtml');
 		if($print == 'print') return 0;
 
 		$langs->load('usernavhistory@usernavhistory');
