@@ -699,6 +699,12 @@ class UserNavHistory extends CommonObject
 			$classfile='adherent_type';
 			$classname='AdherentType';
 		}
+		elseif ($elementtype == 'facturerec') {
+                        $classfile = 'facture-rec';
+                        $classpath = 'compta/facture/class';
+                        $module='facture';
+                        $myobject='FactureRec';
+                }
 // @todo : Sondage
 //var_dump($conf);
 		if (!empty($conf->$module->enabled))
