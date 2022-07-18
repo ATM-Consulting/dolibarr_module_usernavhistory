@@ -115,6 +115,9 @@ class ActionsUserNavHistory
 
 	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
 		global $user, $conf, $langs;
+		$print = GETPOST('optioncss', 'alphanohtml');
+		if($print == 'print') return 0;
+
 		$langs->load('usernavhistory@usernavhistory');
 
 		$aFilters = ['fk_user' => $user->id];
@@ -127,6 +130,8 @@ class ActionsUserNavHistory
 		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
 		if(!empty($aUnh)) {
 			foreach ($aUnh as $i => $item) {
+				if($item->element_type == 'category') $item->object->color = '#FFFFFF'; // Hack for categories because link color is calculated regarding category color
+
 				if(!method_exists($item->object, 'getNomUrl')) $elem = $item->element_type.' : '.$item->element_id;
 				else $elem = $item->object->getNomUrl(1);
 				$divUNH.= '<li>'.$elem.'</li>';
