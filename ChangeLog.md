@@ -2,6 +2,7 @@
 
 ## 1.0
 
+- FIX : object category was not compatible *17/07/2022* - 1.0.5
 - FIX : object facturerec was not compatible *23/06/2022* - 1.0.4
 - FIX : do not display usernavhistory in print mode *23/06/2022* - 1.0.3
 - FIX : object picto max size *14/06/2022* - 1.0.2
