@@ -656,7 +656,6 @@ class UserNavHistory extends CommonObject
 		// Generic case for $classfile and $classname
 		$classfile = strtolower($myobject); $classname = ucfirst($myobject);
 		//print "objecttype=".$objecttype." module=".$module." subelement=".$subelement." classfile=".$classfile." classname=".$classname;
-
 		if ($elementtype == 'invoice_supplier') {
 			$classfile = 'fournisseur.facture';
 			$classname = 'FactureFournisseur';
@@ -704,14 +703,18 @@ class UserNavHistory extends CommonObject
 			$classfile='adherent_type';
 			$classname='AdherentType';
 		}
-		elseif ($elementtype == 'facturerec') {
-                        $classfile = 'facture-rec';
-                        $classpath = 'compta/facture/class';
-                        $module='facture';
-                        $myobject='FactureRec';
-                }
-// @todo : Sondage
-//var_dump($conf);
+		else if($elementtype == 'facturerec') {
+			$classfile = 'facture-rec';
+			$classpath = 'compta/facture/class';
+			$module = 'facture';
+			$myobject = 'FactureRec';
+		}
+
+		global $action, $hookmanager;
+		$hookmanager->initHooks(array('usernavhistorydao'));
+		$parameters = array('elementtype' => &$elementtype, 'elementid'=> &$elementid, 'classfile' => &$classfile, 'classname' => &$classname, 'classpath' => &$classpath, 'module' => &$module);
+		$hookmanager->executeHooks('getObjectByElement', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
+
 		if (!empty($conf->$module->enabled))
 		{
 			$res = dol_include_once('/'.$classpath.'/'.$classfile.'.class.php');
