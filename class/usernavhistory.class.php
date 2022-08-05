@@ -202,7 +202,7 @@ class UserNavHistory extends CommonObject
 	 * @param CommonObject    $object
 	 * @return string formatted as elementType
 	 */
-	public function getObjectElementType($object)
+	static public function getObjectElementType($object)
 	{
 		// Elements of the core modules which have `$module` property but may to which we don't want to prefix module part to the element name for finding the linked object in llx_element_element.
 		// It's because an entry for this element may be exist in llx_element_element before this modification (version <=14.2) and ave named only with their element name in fk_source or fk_target.
