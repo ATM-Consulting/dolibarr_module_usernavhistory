@@ -193,6 +193,34 @@ class UserNavHistory extends CommonObject
 		return $result;
 	}
 
+
+
+	/**
+	 * Copié depuis add_object_linked du common object en V16 de Dolibarr
+	 * permet de générer le element_type
+	 *
+	 * @param CommonObject    $object
+	 * @return string formatted as elementType
+	 */
+	public function getObjectElementType($object)
+	{
+		// Elements of the core modules which have `$module` property but may to which we don't want to prefix module part to the element name for finding the linked object in llx_element_element.
+		// It's because an entry for this element may be exist in llx_element_element before this modification (version <=14.2) and ave named only with their element name in fk_source or fk_target.
+		$coreModules = array('knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization');
+		// Add module part to target type if object has $module property and isn't in core modules.
+
+		if(!empty($object->module) && !in_array($object->module, $coreModules)){
+			$modulePrefix = $object->module . '_';
+			if(strpos($object->element, $modulePrefix) === false){
+				return $modulePrefix.$object->element;
+			}
+		}
+
+		return $object->element;
+	}
+
+
+
 	/**
 	 * Load list of objects in memory from the database.
 	 *
