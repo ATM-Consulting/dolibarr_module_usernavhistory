@@ -83,6 +83,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formsetup.class.php';
 $formSetup = new FormSetup($db);
 
 // you can use the param convertor
+$arrayofparameters = array();
 $formSetup->addItemsFromParamsArray($arrayofparameters);
 
 // or use the new system see exemple as follow (or use both because you can ;-) )
