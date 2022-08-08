@@ -101,9 +101,8 @@ class ActionsUserNavHistory
 
 		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
 			dol_include_once('usernavhistory/class/usernavhistory.class.php');
-
 			$unh = new UserNavHistory($this->db);
-			$res = $unh->addElementInUserHistory($user->id, $object->id, $object->element);
+			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getObjectElementType($object));
 
 			if($res < 0) {
 				$this->error = $unh->errors;

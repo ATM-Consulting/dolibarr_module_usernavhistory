@@ -21,7 +21,7 @@ CREATE TABLE llx_user_navhistory(
     entity integer DEFAULT 1 NOT NULL,
 	fk_user integer NOT NULL,
 	element_id integer,
-	element_type varchar(32),
+	element_type varchar(64),
 	date_last_view timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 	-- END MODULEBUILDER FIELDS
 ) ENGINE=innodb;
