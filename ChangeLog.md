@@ -1,6 +1,7 @@
 # CHANGELOG USERNAVHISTORY FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
 ## 1.0
+- FIX : ProductLot elements not supported *08/02/2023* - 1.0.9
 - FIX : Element type compatibility for module created in V16  *05/08/2022* - 1.0.8
 - FIX : Ajout hook pour compat agefodd - *02/08/2022* - 1.0.7
 - FIX : Compatibility V16 - Family - *24/06/2022* - 1.0.6

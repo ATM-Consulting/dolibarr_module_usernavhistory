@@ -541,6 +541,11 @@ class UserNavHistory extends CommonObject
 	{
 		global $conf, $langs, $db;
 
+        /**
+         * TODO factoriser cette méthode lorsque cette PR sera passée : https://github.com/Dolibarr/dolibarr/pull/21674
+         * pour prendre en compte la rétrocompatibilité
+         */
+
 		$ret = -1;
 		$regs = array();
 
@@ -680,6 +685,12 @@ class UserNavHistory extends CommonObject
 			$classpath = 'recruitment/class';
 			$module='recruitment';
 		}
+        elseif(function_exists('getElementProperties')){
+            $element_properties =  getElementProperties($elementtype);
+            $classpath = $element_properties['classpath'];
+            $module= $element_properties['module'];
+        }
+
 
 		// Generic case for $classfile and $classname
 		$classfile = strtolower($myobject); $classname = ucfirst($myobject);
@@ -735,7 +746,13 @@ class UserNavHistory extends CommonObject
 			$classfile = 'facture-rec';
 			$classpath = 'compta/facture/class';
 			$module = 'facture';
-			$myobject = 'FactureRec';
+            $classname = 'FactureRec';
+		}
+		else if($elementtype == 'productlot') {
+			$classfile = 'productlot';
+			$classpath = 'product/stock/class/';
+			$module = 'product';
+            $classname = 'ProductLot';
 		}
 
 		global $action, $hookmanager;
