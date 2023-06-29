@@ -130,7 +130,7 @@ class ActionsUserNavHistory
 		if(!empty($aUnh)) {
 			foreach ($aUnh as $i => $item) {
 				if($item->element_type == 'category') $item->object->color = '#FFFFFF'; // Hack for categories because link color is calculated regarding category color
-
+				if($item->object < 0) continue;
 				if(!method_exists($item->object, 'getNomUrl')) $elem = $item->element_type.' : '.$item->element_id;
 				else $elem = $item->object->getNomUrl(1);
 				$divUNH.= '<li>'.$elem.'</li>';
