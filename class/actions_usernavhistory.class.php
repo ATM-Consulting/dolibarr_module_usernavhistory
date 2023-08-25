@@ -136,14 +136,30 @@ class ActionsUserNavHistory
 				$divUNH.= '<li>'.$elem.'</li>';
 			}
 		}
+
 		$divUNH.= '</ol>';
 
 		$divStart = '<div class="usernavhistory">';
 		$divEnd = '</div>';
+
 		$hookmanager->resPrint = null; // Pour gerer le hookception
 		$this->resprints = $divStart . $divUNH . $divEnd;
 		//var_dump($conf);exit;
+
+		?>
+		<script>
+
+			if (window.name == 'objectpreview') {
+				$(document).ready(function () {
+					$('.usernavhistory').hide();
+				});
+			}
+
+		</script>
+		<?php
+
 		return 1;
+
 	}
 
 	public function printTopRightMenu($parameters, &$object, &$action, $hookmanager) {
