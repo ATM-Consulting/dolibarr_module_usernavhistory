@@ -143,7 +143,21 @@ class ActionsUserNavHistory
 		$hookmanager->resPrint = null; // Pour gerer le hookception
 		$this->resprints = $divStart . $divUNH . $divEnd;
 		//var_dump($conf);exit;
+
+		?>
+		<script>
+			// cache la barre d'historique de navigation dans les popins
+			if (window.name == 'objectpreview') {
+				$(document).ready(function () {
+					$('.usernavhistory').hide();
+				});
+			}
+
+		</script>
+		<?php
+
 		return 1;
+
 	}
 
 	public function printTopRightMenu($parameters, &$object, &$action, $hookmanager) {
