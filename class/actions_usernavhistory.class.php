@@ -23,10 +23,12 @@
  * Put detailed description here.
  */
 
+require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php';
+
 /**
  * Class ActionsUserNavHistory
  */
-class ActionsUserNavHistory
+class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookActions
 {
 	/**
 	 * @var DoliDB Database handler.
@@ -123,9 +125,9 @@ class ActionsUserNavHistory
 
 		dol_include_once('usernavhistory/class/usernavhistory.class.php');
 		$unh = new UserNavHistory($this->db);
-		$aUnh = $unh->fetchAll('ASC', 'date_last_view', $conf->global->USERNAVHISTORY_MAX_ELEMENT_NUMBER, 0, $aFilters);
+		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
 
-		$title = $langs->trans('LastNElementViewed', $conf->global->USERNAVHISTORY_MAX_ELEMENT_NUMBER);
+		$title = $langs->trans('LastNElementViewed',  getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
 		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
 		if(!empty($aUnh)) {
 			foreach ($aUnh as $i => $item) {
