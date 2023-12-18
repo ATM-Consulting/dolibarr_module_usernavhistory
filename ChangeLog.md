@@ -1,7 +1,12 @@
 # CHANGELOG USERNAVHISTORY FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## [Unreleased]
+
+
+
 ## 1.1
-- FIX : Compat V16 et php8.2 *24/11/2023* - 1.1
+
+- FIX : Compat V19 et php8.2 *24/11/2023* - 1.1
 
 ## 1.0
 - FIX : Removed display of usernavhistory in popin *25/08/2023* - 1.0.10
