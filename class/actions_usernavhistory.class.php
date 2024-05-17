@@ -81,6 +81,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 	public function getNomUrl($parameters, &$object, &$action)
 	{
 		global $db, $langs, $conf, $user;
+
 		$this->resprints = '';
 		return 0;
 	}
@@ -116,6 +117,8 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
 		global $user, $conf, $langs;
+
+		$params = $paramToadd =  "";
 		$print = GETPOST('optioncss', 'alphanohtml');
 		if($print == 'print') return 0;
 
@@ -125,16 +128,42 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 		dol_include_once('usernavhistory/class/usernavhistory.class.php');
 		$unh = new UserNavHistory($this->db);
-		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
+		$aUnh = $unh->fetchAll('ASC', 'date_last_view', 100, 0, $aFilters);
 
 		$title = $langs->trans('LastNElementViewed',  getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
 		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
 		if(!empty($aUnh)) {
 			foreach ($aUnh as $i => $item) {
+				$params ="";
 				if($item->element_type == 'category') $item->object->color = '#FFFFFF'; // Hack for categories because link color is calculated regarding category color
 				if($item->object < 0) continue;
-				if(!method_exists($item->object, 'getNomUrl')) $elem = $item->element_type.' : '.$item->element_id;
-				else $elem = $item->object->getNomUrl(1);
+
+				if(!method_exists($item->object, 'getNomUrl'))
+					$elem = $item->element_type.' : '.$item->element_id;
+				else
+					$elem = $item->object->getNomUrl(1);
+					$pattern = '/<a\s+href="([^"]+)"/';
+					preg_match($pattern, $elem, $matches);
+					if (count($matches) > 1) {
+						// URL trouvée
+						$url = $matches[1];
+
+						// propriété définie à la volée dans usernavhistory.class.php
+						if (empty($item->object->mainmodule)){
+							// nous somme sur un module custom
+							$paramToadd =  'mainmenu='.UserNavHistory::getMainMenuFromElement($url) ;
+						}else{
+							// nous somme dans std dolibarr
+							$paramToadd =  'mainmenu='.$item->object->mainmodule ;
+						}
+						// on test la presence de ? dans l'uri  et on ajuste en conséquence le séparateur de paramètre uri
+						$params .= strpos($url, '?') ? "&".$paramToadd : "?".$paramToadd;
+
+
+						// Remplacer l'ancienne URL par la nouvelle dans la chaîne
+						$elem= preg_replace($pattern, '<a href="' . $url.$params . '"', $elem);
+					}
+
 				$divUNH.= '<li>'.$elem.'</li>';
 			}
 		}
@@ -144,7 +173,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 		$divEnd = '</div>';
 		$hookmanager->resPrint = null; // Pour gerer le hookception
 		$this->resprints = $divStart . $divUNH . $divEnd;
-		//var_dump($conf);exit;
+
 
 		?>
 		<script>
