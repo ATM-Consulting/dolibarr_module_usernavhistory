@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-
+NEW : ajout des mainmenu dans lesq liens générés par le module - *17/05/2024* - 1.2.0  
 
 ## 1.1
 
