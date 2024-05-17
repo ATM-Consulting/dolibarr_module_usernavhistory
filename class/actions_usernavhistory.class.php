@@ -151,13 +151,13 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 						// propriété définie à la volée dans usernavhistory.class.php
 						if (empty($item->object->mainmodule)){
 							// nous somme sur un module custom
-							$paramToadd =  'mainmenu='.UserNavHistory::getMainMenuFromElement($url) ;
+							$paramToadd =  !empty(UserNavHistory::getMainMenuFromElement($url)) ?  'mainmenu='.UserNavHistory::getMainMenuFromElement($url) : "" ;
 						}else{
 							// nous somme dans std dolibarr
 							$paramToadd =  'mainmenu='.$item->object->mainmodule ;
 						}
 						// on test la presence de ? dans l'uri  et on ajuste en conséquence le séparateur de paramètre uri
-						$params .= strpos($url, '?') ? "&".$paramToadd : "?".$paramToadd;
+						$params .= strpos($url, '?') && !empty($paramToadd) ? "&".$paramToadd : "?".$paramToadd;
 
 
 						// Remplacer l'ancienne URL par la nouvelle dans la chaîne
