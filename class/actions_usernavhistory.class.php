@@ -128,7 +128,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 		dol_include_once('usernavhistory/class/usernavhistory.class.php');
 		$unh = new UserNavHistory($this->db);
-		$aUnh = $unh->fetchAll('ASC', 'date_last_view', 100, 0, $aFilters);
+		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
 
 		$title = $langs->trans('LastNElementViewed',  getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
 		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
