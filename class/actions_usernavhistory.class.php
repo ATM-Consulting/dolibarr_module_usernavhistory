@@ -157,7 +157,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 							$paramToadd =  'mainmenu='.$item->object->mainmodule ;
 						}
 						// on test la presence de ? dans l'uri  et on ajuste en conséquence le séparateur de paramètre uri
-						$params .= strpos($url, '?') && !empty($paramToadd) ? "&".$paramToadd : "?".$paramToadd;
+						if (!empty($paramToadd)) $params .= strpos($url, '?')  ? "&".$paramToadd : "?".$paramToadd;
 
 
 						// Remplacer l'ancienne URL par la nouvelle dans la chaîne
