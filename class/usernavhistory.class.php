@@ -605,6 +605,16 @@ class UserNavHistory extends CommonObject
 	 */
 	public function setInternalValues( string $elementtype, string $classpath, string $module, string $myobject): array{
 		$mainmodule = "";
+
+		// Pour que les liens apparaissent dans l'interface il est impératif de renseigner
+		/*
+		$classpath
+		$module
+		$myobject
+		$mainmodule
+
+		 */
+
 		// Special cases, to work with non standard path
 		if ($elementtype == 'facture' || $elementtype == 'invoice') {
 			$classpath = 'compta/facture/class';
@@ -612,6 +622,18 @@ class UserNavHistory extends CommonObject
 			$myobject='facture';
 			$mainmodule="billing";
 
+		}
+		elseif ($elementtype == 'ticket' ) {
+			$classpath = 'ticket/class';
+			$module='ticket';
+			$myobject='ticket';
+			$mainmodule="ticket";
+		}
+		elseif ($elementtype == 'holiday' ) {
+			$classpath = 'holiday/class';
+			$module='holiday';
+			$myobject='holiday';
+			$mainmodule="hrm";
 		}
 		elseif ($elementtype == 'societe' ) {
 			$classpath = 'societe/class';
@@ -675,6 +697,12 @@ class UserNavHistory extends CommonObject
 			$myobject='fichinter';
 			$mainmodule="ficheinter";
 		}
+		elseif ($elementtype == 'expensereport') {
+			$classpath = 'expensereport/class';
+			$module='expensereport';
+			$myobject='expensereport';
+			$mainmodule="hrm";
+		}
 		elseif ($elementtype == 'task') {
 			$classpath = 'projet/class';
 			$module='projet';
@@ -702,11 +730,13 @@ class UserNavHistory extends CommonObject
 		elseif ($elementtype == 'salary') {
 			$classpath = 'salaries/class';
 			$module='salaries';
+			$myobject='salary';
 			$mainmodule="billing";
 		}
 		elseif ($elementtype == 'chargesociales') {
 			$classpath = 'compta/sociales/class';
 			$module='tax';
+			$myobject='salary';
 			$mainmodule="tax";
 		}
 		elseif ($elementtype == 'tva') {
@@ -720,9 +750,10 @@ class UserNavHistory extends CommonObject
 			$myobject='bonprelevement';
 			$mainmodule="accountancy";
 		}
-		elseif ($elementtype == 'project') {
+		elseif ($elementtype == 'project' || $elementtype == 'projet') {
 			$classpath = 'projet/class';
 			$module='projet';
+			$myobject = 'project';
 			$mainmodule="project";
 		}
 		elseif ($elementtype == 'project_task') {
@@ -833,7 +864,7 @@ class UserNavHistory extends CommonObject
 			$module = 'product';
 			$classname = 'ProductLot';
 			$mainmodule="products";
-			$mainmodule="products";
+
 		}
 
 		return array($classpath,$module,$classfile, $classname, $mainmodule);
