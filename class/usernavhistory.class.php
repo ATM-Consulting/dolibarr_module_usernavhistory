@@ -540,7 +540,7 @@ class UserNavHistory extends CommonObject
 	 */
 	function getObjectByElement($elementtype, $elementid = 0)
 	{
-		global $conf, $langs, $db;
+		global $conf, $langs, $db, $action, $hookmanager;
 
         /**
          * TODO factoriser cette méthode lorsque cette PR sera passée : https://github.com/Dolibarr/dolibarr/pull/21674
@@ -571,7 +571,7 @@ class UserNavHistory extends CommonObject
 
 		list($classpath, $module, $classfile, $classname, $mainmodule) =  $this->setInternalValues($elementtype, $classpath, $module, $myobject );
 
-		global $action, $hookmanager;
+
 		$hookmanager->initHooks(array('usernavhistorydao'));
 		$parameters = array('elementtype' => &$elementtype, 'elementid'=> &$elementid, 'classfile' => &$classfile, 'classname' => &$classname, 'classpath' => &$classpath, 'module' => &$module);
 		$hookmanager->executeHooks('getObjectByElement', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
@@ -887,7 +887,7 @@ class UserNavHistory extends CommonObject
 			$urlPartie = substr($url, strpos($url, 'htdocs') + strlen('htdocs'), strpos($url, '?') - strpos($url, 'htdocs'));
 		// sinon le nom de domaine
 		}else{
-			$urlPartie = substr($url, strpos($url, $_SERVER['HTTP_HOST']) + strlen($_SERVER['HTTP_HOST']), strpos($url, '?') - strpos($url, $_SERVER['HTTP_HOST']));
+			$urlPartie = substr($url, strpos($url, DOL_URL_ROOT) + strlen(DOL_URL_ROOT), strpos($url, '?') - strpos($url, DOL_URL_ROOT));
 		}
 
 		// Vérifier s'il y a un paramètre dans l'URL restante et le supprimer
