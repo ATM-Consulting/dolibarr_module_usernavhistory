@@ -165,7 +165,7 @@ class modUserNavHistory extends DolibarrModules
 			'fr_FR:ParentCompany'=>'Maison mère ou revendeur'
 		)*/
 
-		if (!isset($conf->usernavhistory) || !isset($conf->usernavhistory->enabled)) {
+		if (!isset($conf->usernavhistory) || !isModEnabled('usernavhistory')) {
 			$conf->usernavhistory = new stdClass();
 			$conf->usernavhistory->enabled = 0;
 		}
@@ -173,8 +173,8 @@ class modUserNavHistory extends DolibarrModules
 		// Array to add new pages in new tabs
 		$this->tabs = array();
 		// Example:
-		// $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@usernavhistory:$user->rights->usernavhistory->read:/usernavhistory/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
-		// $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@usernavhistory:$user->rights->othermodule->read:/usernavhistory/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
+		// $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@usernavhistory:$user->hasRight('usernavhistory', 'read'):/usernavhistory/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
+		// $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@usernavhistory:$user->hasRight('othermodule', 'read'):/usernavhistory/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
 		// $this->tabs[] = array('data'=>'objecttype:-tabname:NU:conditiontoremove');                                                     										// To remove an existing tab identified by code tabname
 		//
 		// Where objecttype can be
@@ -220,7 +220,7 @@ class modUserNavHistory extends DolibarrModules
 			// Name of columns with primary key (try to always name it 'rowid')
 			'tabrowid'=>array("rowid", "rowid", "rowid"),
 			// Condition to show each dictionary
-			'tabcond'=>array($conf->usernavhistory->enabled, $conf->usernavhistory->enabled, $conf->usernavhistory->enabled)
+			'tabcond'=>array(isModEnabled('usernavhistory'), isModEnabled('usernavhistory'), isModEnabled('usernavhistory'))
 		);
 		*/
 
@@ -249,13 +249,13 @@ class modUserNavHistory extends DolibarrModules
 			//      'frequency' => 2,
 			//      'unitfrequency' => 3600,
 			//      'status' => 0,
-			//      'test' => '$conf->usernavhistory->enabled',
+			//      'test' => 'isModEnabled('usernavhistory')',
 			//      'priority' => 50,
 			//  ),
 		);
 		// Example: $this->cronjobs=array(
-		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'$conf->usernavhistory->enabled', 'priority'=>50),
-		//    1=>array('label'=>'My label', 'jobtype'=>'command', 'command'=>'', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>1, 'unitfrequency'=>3600*24, 'status'=>0, 'test'=>'$conf->usernavhistory->enabled', 'priority'=>50)
+		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'isModEnabled('usernavhistory')', 'priority'=>50),
+		//    1=>array('label'=>'My label', 'jobtype'=>'command', 'command'=>'', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>1, 'unitfrequency'=>3600*24, 'status'=>0, 'test'=>'isModEnabled('usernavhistory')', 'priority'=>50)
 		// );
 
 		// Permissions provided by this module
@@ -345,11 +345,11 @@ class modUserNavHistory extends DolibarrModules
 		// Create extrafields during init
 		//include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		//$extrafields = new ExtraFields($this->db);
-		//$result1=$extrafields->addExtraField('usernavhistory_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', '$conf->usernavhistory->enabled');
-		//$result2=$extrafields->addExtraField('usernavhistory_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', '$conf->usernavhistory->enabled');
-		//$result3=$extrafields->addExtraField('usernavhistory_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', '$conf->usernavhistory->enabled');
-		//$result4=$extrafields->addExtraField('usernavhistory_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'usernavhistory@usernavhistory', '$conf->usernavhistory->enabled');
-		//$result5=$extrafields->addExtraField('usernavhistory_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', '$conf->usernavhistory->enabled');
+		//$result1=$extrafields->addExtraField('usernavhistory_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', 'isModEnabled('usernavhistory')');
+		//$result2=$extrafields->addExtraField('usernavhistory_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', 'isModEnabled('usernavhistory')');
+		//$result3=$extrafields->addExtraField('usernavhistory_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', 'isModEnabled('usernavhistory')');
+		//$result4=$extrafields->addExtraField('usernavhistory_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'usernavhistory@usernavhistory', 'isModEnabled('usernavhistory')');
+		//$result5=$extrafields->addExtraField('usernavhistory_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'usernavhistory@usernavhistory', 'isModEnabled('usernavhistory')');
 
 		// Permissions
 		$this->remove($options);

@@ -127,12 +127,12 @@ class UserNavHistory extends CommonObject
 		if (empty(getDolGlobalString('MAIN_SHOW_TECHNICAL_ID')) && isset($this->fields['rowid'])) {
 			$this->fields['rowid']['visible'] = 0;
 		}
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) {
+		if (!isModEnabled('multicompany') && isset($this->fields['entity'])) {
 			$this->fields['entity']['enabled'] = 0;
 		}
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->usernavhistory->usernavhistory->read) {
+		/*if ($user->hasRight('usernavhistory', 'usernavhistory', 'read')) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
