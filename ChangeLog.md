@@ -2,13 +2,19 @@
 
 ## [Unreleased]
 
-NEW : ajout des mainmenu dans lesq liens générés par le module - *17/05/2024* - 1.2.0  
+
+
+## 1.2
+
+- FIX : Les produits étaient manquants dans la barre de navigation - *18/07/2024* - 1.2.1
+- NEW : ajout des mainmenu dans les liens générés par le module - *17/05/2024* - 1.2.0  
 
 ## 1.1
 
-- FIX : Compat V19 et php8.2 *24/11/2023* - 1.1
+- FIX : Compat V19 et php8.2 *24/11/2023* - 1.1.0
 
 ## 1.0
+
 - FIX : Removed display of usernavhistory in popin *25/08/2023* - 1.0.10
 - FIX : ProductLot elements not supported *08/02/2023* - 1.0.9
 - FIX : Element type compatibility for module created in V16  *05/08/2022* - 1.0.8
