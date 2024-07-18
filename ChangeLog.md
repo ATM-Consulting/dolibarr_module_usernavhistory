@@ -6,6 +6,7 @@
 
 ## 1.2
 
+- FIX : Les produits étaient manquants dans la barre de navigation - *18/07/2024* - 1.2.1
 - NEW : ajout des mainmenu dans les liens générés par le module - *17/05/2024* - 1.2.0  
 
 ## 1.1

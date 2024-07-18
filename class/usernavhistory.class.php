@@ -622,6 +622,11 @@ class UserNavHistory extends CommonObject
 			$myobject='facture';
 			$mainmodule="billing";
 
+		}elseif ($elementtype == 'product') {
+			$classpath = 'product/class';
+			$module='product';
+			$myobject='product';
+			$mainmodule="products";
 		}
 		elseif ($elementtype == 'ticket' ) {
 			$classpath = 'ticket/class';
