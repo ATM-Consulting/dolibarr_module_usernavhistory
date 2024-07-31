@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import {URL_TO_USE} from "./ConfigLocal.spec";
+import {THIRDPARTY_NAME, URL_TO_USE} from "./ConfigLocal.spec";
 
 export async function checkModuleActivated(page) {
 	await page.getByTitle('Configuration').click();
@@ -56,4 +56,56 @@ export async function checkUserLogged(page){
 	await expect(page).toHaveTitle(/Accueil/);
 };
 
+// fonction générique de création de tiers pour test ultérieur
+export async function addThirdparty(page, nameThridparty){
 
+	await page.goto(URL_TO_USE + 'societe/card.php?action=create&mainmenu=companies');
+
+	// Thirdparty name
+	await page.locator('#name').fill(nameThridparty);
+
+	// Thirdparty alias
+	await page.locator('#name_alias_input').fill('[Playwright]');
+
+	// Set thirdparty as "Customer only"
+	await page.locator('#customerprospect').selectOption('1');
+
+	// Set thirdparty as "Not Supplier"
+	await page.locator('#fournisseur').selectOption('0');
+
+	// Submit form
+	await page.getByRole('button', { name: 'Créer tiers' }).click();
+
+	await expect(page).toHaveTitle(nameThridparty +' - Fiche');
+};
+
+// fonction générique de suppression de tiers pour test ultérieur
+export async function deleteThirdparty(page, nameThridparty){
+
+	await page.goto(URL_TO_USE + 'societe/index.php?mainmenu=companies');
+
+	// ===== JUST THE BEGINNING =====
+	await page.getByRole('link', { name: 'Liste', exact: true }).first().click();
+	await expect(page).toHaveTitle('Tiers');
+	await expect(page).toHaveURL(/societe\/list\.php/);
+
+	const firstRecord = page.locator(`a.classfortooltip.refurl.valignmiddle:has-text("${nameThridparty}")`).first();
+	await expect(firstRecord).toBeVisible();
+	await firstRecord.click();
+
+	await expect(page).toHaveTitle(/Fiche$/);
+
+	const deleteButton = page.locator('#action-delete');
+	await expect(deleteButton).toBeVisible();
+	await expect(deleteButton).toBeEnabled();
+
+	// ===== ACTUAL DELETION =====
+	await deleteButton.click();
+	await expect(page.locator('.statusref')).toBeVisible();
+
+	const dialogYesButton = page.getByRole('button', { name: 'Oui' });
+	await expect(dialogYesButton).toBeVisible();
+
+	await dialogYesButton.click();
+	await expect(page).toHaveURL(/societe\/list\.php/);
+};

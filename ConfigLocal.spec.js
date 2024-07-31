@@ -8,5 +8,7 @@ export const PROD = 0;
 
 export const URL_TO_USE = PROD ? URL_SERVER : LOCAL_URL_SERVER;
 
+// conf Value
+export const CONF_VALUE_MAX = 2;
 
 
