@@ -127,7 +127,7 @@ class UserNavHistory extends CommonObject
 		if (empty(getDolGlobalString('MAIN_SHOW_TECHNICAL_ID')) && isset($this->fields['rowid'])) {
 			$this->fields['rowid']['visible'] = 0;
 		}
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) {
+		if (!isModEnabled('multicompany') && isset($this->fields['entity'])) {
 			$this->fields['entity']['enabled'] = 0;
 		}
 
@@ -576,7 +576,7 @@ class UserNavHistory extends CommonObject
 		$parameters = array('elementtype' => &$elementtype, 'elementid'=> &$elementid, 'classfile' => &$classfile, 'classname' => &$classname, 'classpath' => &$classpath, 'module' => &$module);
 		$hookmanager->executeHooks('getObjectByElement', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 
-		if (!empty($conf->$module->enabled))
+		if (isModEnabled($module))
 		{
 			$res = dol_include_once('/'.$classpath.'/'.$classfile.'.class.php');
 			if ($res)
