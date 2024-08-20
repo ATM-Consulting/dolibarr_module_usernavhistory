@@ -90,10 +90,7 @@ test.describe('Test page configuration  Module administration', () => {
 
 	});
 
-	test('T-03 should apply configuration settings correctly', async ({ page }) => {
-		//
 
-	});
 
 
 });

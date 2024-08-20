@@ -2,12 +2,9 @@ import { expect } from '@playwright/test';
 import {THIRDPARTY_NAME, URL_TO_USE} from "./ConfigLocal.spec";
 
 export async function checkModuleActivated(page) {
-	await page.getByTitle('Configuration').click();
-	await expect(page).toHaveTitle(/Configuration/);
-
-	await page.getByText('Configuration - Modules/Applications' ).click();
-	await expect(page).toHaveURL( /.*\/admin\/modules\.php.*/);
-
+	await page.goto(URL_TO_USE + '/admin/modules.php?mainmenu=home');
+	// Attendre que la page soit complètement chargée
+	await page.waitForLoadState('networkidle');
 	await page.getByPlaceholder('Mot-clé').fill('HISTORIQUE NAVIGATION UTILISATEUR');
 	await page.getByRole('button', { name: 'Rafraichir' }).click();
 
@@ -38,18 +35,18 @@ export async function checkUserLogged(page){
 	await page.goto(URL_TO_USE + 'index.php/');
 	const inputPassword = page.getByRole('textbox', {name: 'Mot de passe'});
 
-	// Expect a title "to contain" a substring.
-	await expect(page).toHaveTitle(/Identifiant/);
+	// sommes nous sur la page de login  ?
+	await expect(page.locator('#username')).toHaveAttribute('type', 'text');
 
 	const inputUsername = page.locator('#username');
 	const inputUsername2 = page.locator('input.flat.input-icon-user.minwidth150');
 	const inputUsername3 = page.locator('[name = \'username\']');
 	const inputPassword2 = page.locator("#password");
 
-	await page.getByPlaceholder('Identifiant').fill('admin');
+	await page.getByPlaceholder('Identifiant').fill(process.env.DOLIBARR_USER_LOGIN);
 
 	const password = page.getByPlaceholder('Mot de passe');
-	await password.fill('admin');
+	await password.fill(process.env.DOLIBARR_USER_PASSWORD);
 	await password.press('Enter');
 
 	// We must be loged in now
