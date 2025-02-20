@@ -880,7 +880,7 @@ class UserNavHistory extends CommonObject
 	 * @param string $url
 	 * @return string
 	 */
-	public static function getMainMenuFromElement(string $url) : string {
+	public static function getMainMenuFromElement(string $url) : string|null {
 		global $db;
 
 		// Vérifier si "custom" est présent dans l'URL
