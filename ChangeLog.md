@@ -6,6 +6,7 @@
 
 ## 1.3
 
+- FIX : FATAL PHP compatibility 7.0  - *24/07/2024* - 1.3.1
 - FIX : Compat v20 
   Changed Dolibarr compatibility range to 16 min - 20 max
   Changed PHP compatibility range to 7.0 min - *24/07/2024* - 1.3.0
