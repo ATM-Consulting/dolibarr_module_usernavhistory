@@ -436,9 +436,9 @@ class UserNavHistory extends CommonObject
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) {
-			$result = $this->resprint;
+			$result = $hookmanager->resPrint;
 		} else {
-			$result .= $this->resprint;
+			$result .= $hookmanager->resPrint;
 		}
 
 		return $result;
