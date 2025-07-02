@@ -47,7 +47,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 
 	/**
-	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
+	 * @var array Hook results. Propagated to $this->results for later reuse
 	 */
 	public $results = array();
 
@@ -171,7 +171,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 		$divStart = '<div class="usernavhistory">';
 		$divEnd = '</div>';
-		$hookmanager->resPrint = null; // Pour gerer le hookception
+		$this->resprints = null; // Pour gerer le hookception
 		$this->resprints = $divStart . $divUNH . $divEnd;
 
 
