@@ -164,6 +164,13 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 	}
 
+	/**
+	 * @param $parameters
+	 * @param $object
+	 * @param $action
+	 * @param $hookmanager
+	 * @return int
+	 */
 	public function doActions($parameters, &$object, &$action, $hookmanager) {
 		global $conf, $user, $langs;
 
