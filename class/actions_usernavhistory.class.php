@@ -86,34 +86,7 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 		return 0;
 	}
 
-	/**
-	 * Overloading the formObjectOptions function : replacing the parent's function with the one below
-	 *
-	 * @param   array           $parameters     Hook metadatas (context, etc...)
-	 * @param   CommonObject    $object         The object to process (an invoice if you are in invoice module, a propale in propale's module, etc...)
-	 * @param   string          $action         Current action (if set). Generally create or edit or null
-	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
-	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
-	 */
-	public function formObjectOptions($parameters, &$object, &$action, $hookmanager)
-	{
-		global $conf, $user, $langs;
 
-		$error = 0; // Error counter
-		$aContext = explode(":", $parameters['context']);
-
-		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
-			dol_include_once('usernavhistory/class/usernavhistory.class.php');
-			$unh = new UserNavHistory($this->db);
-			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getObjectElementType($object));
-
-			if($res < 0) {
-				$this->error = $unh->errors;
-			}
-
-			return $res;
-		}
-	}
 
 	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
 		global $user, $conf, $langs;
@@ -191,12 +164,24 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 	}
 
-	public function printTopRightMenu($parameters, &$object, &$action, $hookmanager) {
-		//$usernavhist = '<div class="inline-block">';
-		//$usernavhist.= '<div class="classfortooltip inline-block login_block_elem inline-block" style="padding: 0px; padding: 0px; padding-right: 3px !important;"><a href="/index.php?mainmenu=home&amp;leftmenu=home&amp;optioncss=print" target="_blank" rel="noopener noreferrer"><span class="fa fa-print atoplogin valignmiddle"></span></a></div>';
-		//$usernavhist.= '<span class="fa fa-print atoplogin valignmiddle"></span>';
-		//$usernavhist.= '</div>';
-		//$this->resprints = $usernavhist;
+	public function doActions($parameters, &$object, &$action, $hookmanager) {
+		global $conf, $user, $langs;
+
+		$error = 0; // Error counter
+		$aContext = explode(":", $parameters['context']);
+		var_dump($aContext);
+		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
+			dol_include_once('usernavhistory/class/usernavhistory.class.php');
+			$unh = new UserNavHistory($this->db);
+			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getObjectElementType($object));
+
+			if($res < 0) {
+				$this->error = $unh->errors;
+			}
+
+			return $res;
+		}
+
 		return 0;
 	}
 }
