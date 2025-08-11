@@ -176,7 +176,6 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 
 		$error = 0; // Error counter
 		$aContext = explode(":", $parameters['context']);
-		var_dump($aContext);
 		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
 			dol_include_once('usernavhistory/class/usernavhistory.class.php');
 			$unh = new UserNavHistory($this->db);
