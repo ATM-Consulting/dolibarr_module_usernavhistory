@@ -614,15 +614,27 @@ class UserNavHistory extends CommonObject
 		$mainmodule
 
 		 */
+		// Generic case for $classfile and $classname
+		$classfile = strtolower($myobject);
+		$classname = ucfirst($myobject);
 
 		// Special cases, to work with non standard path
-		if ($elementtype == 'facture' || $elementtype == 'invoice') {
+
+		if(function_exists('getElementProperties')){
+			$element_properties =  getElementProperties($elementtype);
+			$classpath = $element_properties['classpath'];
+			$module= $element_properties['module'];
+			$classfile = $element_properties['classfile'];
+			$classname = $element_properties['classname'];
+		}
+		elseif ($elementtype == 'facture' || $elementtype == 'invoice') {
 			$classpath = 'compta/facture/class';
 			$module='facture';
 			$myobject='facture';
 			$mainmodule="billing";
 
-		}elseif ($elementtype == 'product') {
+		}
+		elseif ($elementtype == 'product') {
 			$classpath = 'product/class';
 			$module='product';
 			$myobject='product';
@@ -791,17 +803,7 @@ class UserNavHistory extends CommonObject
 			$module='recruitment';
 			$mainmodule="hrm";
 		}
-		elseif(function_exists('getElementProperties')){
-			$element_properties =  getElementProperties($elementtype);
-			$classpath = $element_properties['classpath'];
-			$module= $element_properties['module'];
-		}
-
-		// Generic case for $classfile and $classname
-		$classfile = strtolower($myobject);
-		$classname = ucfirst($myobject);
-		//print "objecttype=".$objecttype." module=".$module." subelement=".$subelement." classfile=".$classfile." classname=".$classname;
-		if ($elementtype == 'invoice_supplier') {
+		elseif ($elementtype == 'invoice_supplier') {
 			$classfile = 'fournisseur.facture';
 			$classname = 'FactureFournisseur';
 			$classpath = 'fourn/class';
