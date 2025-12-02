@@ -5,6 +5,7 @@
 
 
 ## 1.3
+- FIX : COMPAT V23 - *28/08/2025* - 1.3.5
 - FIX : DA026830 : (regression) link not displayed for some objects (like users) because of failure to load the class - *28/08/2025* - 1.3.4
 - FIX : DA026531 view last visited link - *11/08/2025* - 1.3.3  
 - FIX : COMPAT V22 - *02/07/2025* - 1.3.2
