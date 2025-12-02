@@ -28,7 +28,7 @@ require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php'
 /**
  * Class ActionsUserNavHistory
  */
-class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookActions
+class ActionsUserNavHistory extends \userNavHistory\RetroCompatCommonHookActions
 {
 	/**
 	 * @var DoliDB Database handler.
@@ -85,103 +85,30 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 		$this->resprints = '';
 		return 0;
 	}
-
-
-
-	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
-		global $user, $conf, $langs;
-
-		$params = $paramToadd =  "";
-		$print = GETPOST('optioncss', 'alphanohtml');
-		if($print == 'print') return 0;
-
-		$langs->load('usernavhistory@usernavhistory');
-
-		$aFilters = ['fk_user' => $user->id];
-
-		dol_include_once('usernavhistory/class/usernavhistory.class.php');
-		$unh = new UserNavHistory($this->db);
-		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
-
-		$title = $langs->trans('LastNElementViewed',  getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
-		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
-		if(!empty($aUnh)) {
-			foreach ($aUnh as $i => $item) {
-				$params ="";
-				if($item->element_type == 'category') $item->object->color = '#FFFFFF'; // Hack for categories because link color is calculated regarding category color
-				if($item->object < 0) continue;
-
-				if(!method_exists($item->object, 'getNomUrl'))
-					$elem = $item->element_type.' : '.$item->element_id;
-				else
-					$elem = $item->object->getNomUrl(1);
-					$pattern = '/<a\s+href="([^"]+)"/';
-					preg_match($pattern, $elem, $matches);
-					if (count($matches) > 1) {
-						// URL trouvée
-						$url = $matches[1];
-
-						// propriété définie à la volée dans usernavhistory.class.php
-						if (empty($item->object->mainmodule)){
-							// nous somme sur un module custom
-							$paramToadd =  !empty(UserNavHistory::getMainMenuFromElement($url)) ?  'mainmenu='.UserNavHistory::getMainMenuFromElement($url) : "" ;
-						}else{
-							// nous somme dans std dolibarr
-							$paramToadd =  'mainmenu='.$item->object->mainmodule ;
-						}
-						// on test la presence de ? dans l'uri  et on ajuste en conséquence le séparateur de paramètre uri
-						if (!empty($paramToadd)) $params .= strpos($url, '?')  ? "&".$paramToadd : "?".$paramToadd;
-
-
-						// Remplacer l'ancienne URL par la nouvelle dans la chaîne
-						$elem= preg_replace($pattern, '<a href="' . $url.$params . '"', $elem);
-					}
-
-				$divUNH.= '<li>'.$elem.'</li>';
-			}
-		}
-		$divUNH.= '</ol>';
-
-		$divStart = '<div class="usernavhistory">';
-		$divEnd = '</div>';
-		$this->resprints = null; // Pour gerer le hookception
-		$this->resprints = $divStart . $divUNH . $divEnd;
-
-
-		?>
-		<script>
-			// cache la barre d'historique de navigation dans les popins
-			if (window.name == 'objectpreview') {
-				$(document).ready(function () {
-					$('.usernavhistory').hide();
-				});
-			}
-
-		</script>
-		<?php
-
-		return 1;
-
-	}
-
 	/**
-	 * @param $parameters
-	 * @param $object
-	 * @param $action
-	 * @param $hookmanager
-	 * @return int
+	 * Hook execution to record user navigation history.
+	 *
+	 * Intercepts the 'globalcard' context to save the current object view
+	 * into the user's history log.
+	 *
+	 * @param array       $parameters  Hook context and arguments.
+	 * @param object      $object      The current object being viewed.
+	 * @param string      $action      The current action being performed.
+	 * @param HookManager $hookmanager The hook manager instance.
+	 * @return int Returns 0 on success (or no action), < 0 on error.
 	 */
-	public function doActions($parameters, &$object, &$action, $hookmanager) {
+	public function doActions($parameters, &$object, &$action, $hookmanager)
+	{
 		global $conf, $user, $langs;
 
 		$error = 0; // Error counter
 		$aContext = explode(":", $parameters['context']);
-		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
+		if (in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
 			dol_include_once('usernavhistory/class/usernavhistory.class.php');
 			$unh = new UserNavHistory($this->db);
-			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getObjectElementType($object));
+			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getElementType());
 
-			if($res < 0) {
+			if ($res < 0) {
 				$this->error = $unh->errors;
 			}
 
