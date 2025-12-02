@@ -161,21 +161,23 @@ class TechATM
 	}
 
 	/**
-	 * Fetches URL content and parses associated HTTP headers.
+	 * Fetches URL content using Dolibarr native function.
 	 *
 	 * @param string $url The URL to fetch.
-	 * @return string|false The fetched content, or false on failure.
+	 * @return array|false The fetched content, or false on failure.
 	 */
 	public function getContents($url)
 	{
-		$this->data = false;
-		$res = @file_get_contents($url);
-		$this->http_response_header = $http_response_header;
-		$this->TResponseHeader = self::parseHeaders($http_response_header);
-		if ($res !== false) {
-			$this->data = $res;
+		global $conf;
+		require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+
+		$content = getURLContent($url, 'GET', '', 1, 5);
+		if ($content !== false) {
+			$this->data = $content;
+			return $this->data;
 		}
-		return $this->data;
+
+		return false;
 	}
 	/**
 	 * Parses raw HTTP header lines into an associative array.
