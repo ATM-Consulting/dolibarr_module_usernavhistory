@@ -71,6 +71,7 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 
 // Define css type
 header('Content-type: text/css');
@@ -84,8 +85,8 @@ if (empty($dolibarr_nocache)) {
 
 
 $marginleft = 40;
-if((int) DOL_VERSION >= 20) $marginleft = 42;
-if((int) DOL_VERSION >= 21) $marginleft = 44;
+if(versioncompare(explode('.', DOL_VERSION), array(20)) >= 0) $marginleft = 42;
+if(versioncompare(explode('.', DOL_VERSION), array(21)) >= 0) $marginleft = 44;
 
 ?>
 
