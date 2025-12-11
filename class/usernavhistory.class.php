@@ -170,7 +170,7 @@ class UserNavHistory extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
-		return $this->createCommon($user, $notrigger);
+		return $this->createCommon($user, true);
 	}
 
 	/**
@@ -433,7 +433,6 @@ class UserNavHistory extends CommonObject
 	public function addElementInUserHistory(int $userid, int $elementid, string $elementtype)
 	{
 		global $user, $conf;
-
 		$error = 0;
 		$this->db->begin();
 
@@ -453,11 +452,9 @@ class UserNavHistory extends CommonObject
 				$this->element_id = $elementid;
 				$this->element_type = $elementtype;
 				$this->date_last_view = dol_now();
-
 				$res = $this->create($user);
 			}
 		}
-
 		if ($res < 0) {
 			$error++;
 		}
@@ -468,7 +465,6 @@ class UserNavHistory extends CommonObject
 				$error++;
 			}
 		}
-
 		if (!$error) {
 			$this->db->commit();
 			return 0;
