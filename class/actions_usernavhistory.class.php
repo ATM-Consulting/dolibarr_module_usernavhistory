@@ -28,7 +28,7 @@ require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php'
 /**
  * Class ActionsUserNavHistory
  */
-class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookActions
+class ActionsUserNavHistory extends \userNavHistory\RetroCompatCommonHookActions
 {
 	/**
 	 * @var DoliDB Database handler.
@@ -85,103 +85,30 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 		$this->resprints = '';
 		return 0;
 	}
-
-
-
-	public function printMainArea($parameters, &$object, &$action, $hookmanager) {
-		global $user, $conf, $langs;
-
-		$params = $paramToadd =  "";
-		$print = GETPOST('optioncss', 'alphanohtml');
-		if($print == 'print') return 0;
-
-		$langs->load('usernavhistory@usernavhistory');
-
-		$aFilters = ['fk_user' => $user->id];
-
-		dol_include_once('usernavhistory/class/usernavhistory.class.php');
-		$unh = new UserNavHistory($this->db);
-		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
-
-		$title = $langs->trans('LastNElementViewed',  getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
-		$divUNH = '<ol class="breadcrumb"><li><span title="'.$title.'" class="fas fa-history"></span></li>';
-		if(!empty($aUnh)) {
-			foreach ($aUnh as $i => $item) {
-				$params ="";
-				if($item->element_type == 'category') $item->object->color = '#FFFFFF'; // Hack for categories because link color is calculated regarding category color
-				if($item->object < 0) continue;
-
-				if(!method_exists($item->object, 'getNomUrl'))
-					$elem = $item->element_type.' : '.$item->element_id;
-				else
-					$elem = $item->object->getNomUrl(1);
-					$pattern = '/<a\s+href="([^"]+)"/';
-					preg_match($pattern, $elem, $matches);
-					if (count($matches) > 1) {
-						// URL trouvée
-						$url = $matches[1];
-
-						// propriété définie à la volée dans usernavhistory.class.php
-						if (empty($item->object->mainmodule)){
-							// nous somme sur un module custom
-							$paramToadd =  !empty(UserNavHistory::getMainMenuFromElement($url)) ?  'mainmenu='.UserNavHistory::getMainMenuFromElement($url) : "" ;
-						}else{
-							// nous somme dans std dolibarr
-							$paramToadd =  'mainmenu='.$item->object->mainmodule ;
-						}
-						// on test la presence de ? dans l'uri  et on ajuste en conséquence le séparateur de paramètre uri
-						if (!empty($paramToadd)) $params .= strpos($url, '?')  ? "&".$paramToadd : "?".$paramToadd;
-
-
-						// Remplacer l'ancienne URL par la nouvelle dans la chaîne
-						$elem= preg_replace($pattern, '<a href="' . $url.$params . '"', $elem);
-					}
-
-				$divUNH.= '<li>'.$elem.'</li>';
-			}
-		}
-		$divUNH.= '</ol>';
-
-		$divStart = '<div class="usernavhistory">';
-		$divEnd = '</div>';
-		$this->resprints = null; // Pour gerer le hookception
-		$this->resprints = $divStart . $divUNH . $divEnd;
-
-
-		?>
-		<script>
-			// cache la barre d'historique de navigation dans les popins
-			if (window.name == 'objectpreview') {
-				$(document).ready(function () {
-					$('.usernavhistory').hide();
-				});
-			}
-
-		</script>
-		<?php
-
-		return 1;
-
-	}
-
 	/**
-	 * @param $parameters
-	 * @param $object
-	 * @param $action
-	 * @param $hookmanager
-	 * @return int
+	 * Hook execution to record user navigation history.
+	 *
+	 * Intercepts the 'globalcard' context to save the current object view
+	 * into the user's history log.
+	 *
+	 * @param array       $parameters  Hook context and arguments.
+	 * @param object      $object      The current object being viewed.
+	 * @param string      $action      The current action being performed.
+	 * @param HookManager $hookmanager The hook manager instance.
+	 * @return int Returns 0 on success (or no action), < 0 on error.
 	 */
-	public function doActions($parameters, &$object, &$action, $hookmanager) {
+	public function doActions($parameters, &$object, &$action, $hookmanager)
+	{
 		global $conf, $user, $langs;
 
 		$error = 0; // Error counter
 		$aContext = explode(":", $parameters['context']);
-		if(in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
+		if (in_array('globalcard', $aContext) && !empty($object->element) && !empty($object->id)) {
 			dol_include_once('usernavhistory/class/usernavhistory.class.php');
 			$unh = new UserNavHistory($this->db);
-			$res = $unh->addElementInUserHistory($user->id, $object->id, $unh->getObjectElementType($object));
+			$res = $unh->addElementInUserHistory($user->id, $object->id, $object->getElementType());
 
-			if($res < 0) {
+			if ($res < 0) {
 				$this->error = $unh->errors;
 			}
 
@@ -189,5 +116,99 @@ class ActionsUserNavHistory  extends \userNavHistory\RetroCompatCommonHookAction
 		}
 
 		return 0;
+	}
+	/**
+	 * Outputs the user navigation history bar (breadcrumb).
+	 *
+	 * Retrieves the recently viewed items for the current user and generates a list of links.
+	 * It dynamically injects the correct 'mainmenu' parameter into URLs to maintain
+	 * the active menu context when navigating history.
+	 *
+	 * @param array       $parameters  Hook parameters.
+	 * @param object      $object      The current business object.
+	 * @param string      $action      The current action.
+	 * @param HookManager $hookmanager The hook manager instance.
+	 * @return int Returns 1 (content injected via $this->resprints).
+	 */
+	public function printMainArea($parameters, &$object, &$action, $hookmanager)
+	{
+		global $user, $conf, $langs;
+
+		$print = GETPOST('optioncss', 'alphanohtml');
+		if ($print == 'print') {
+			return 0;
+		}
+
+		$langs->load('usernavhistory@usernavhistory');
+
+		$aFilters = array('fk_user' => $user->id);
+
+		dol_include_once('usernavhistory/class/usernavhistory.class.php');
+		$unh = new UserNavHistory($this->db);
+		// Note: Utilisation de array() au lieu de [] pour compatibilité max avec vieux Dolibarr si besoin, sinon [] est ok.
+		$aUnh = $unh->fetchAll('ASC', 'date_last_view', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'), 0, $aFilters);
+
+		$title = $langs->trans('LastNElementViewed', getDolGlobalString('USERNAVHISTORY_MAX_ELEMENT_NUMBER'));
+
+		$divUNH = '<ol class="breadcrumb"><li><span title="' . $title . '" class="fas fa-history"></span></li>';
+
+		if (!empty($aUnh) && is_array($aUnh)) {
+			foreach ($aUnh as $item) {
+				$params = "";
+				$paramToadd = "";
+
+				// Hack for categories because link color is calculated regarding category color
+				if ($item->element_type == 'category') {
+					$item->object->color = '#FFFFFF';
+				}
+				if ($item->object < 0) {
+					continue;
+				}
+				if (!method_exists($item->object, 'getNomUrl')) {
+					$elem = $item->element_type . ' : ' . $item->element_id;
+				} else {
+					$elem = $item->object->getNomUrl(1);
+				}
+				// Extraction de l'URL brute depuis le lien HTML
+				$pattern = '/<a\s+href="([^"]+)"/';
+				if (preg_match($pattern, $elem, $matches) && count($matches) > 1) {
+					// URL trouvée
+					$url = $matches[1];
+
+					// Propriété définie à la volée dans usernavhistory.class.php
+					if (empty($item->object->mainmodule)) {
+						// Nous sommes sur un module custom
+						$mainMenuId = UserNavHistory::getMainMenuFromElement($url);
+						$paramToadd = !empty($mainMenuId) ? 'mainmenu=' . $mainMenuId : "";
+					} else {
+						// Nous sommes dans le standard Dolibarr
+						$paramToadd = 'mainmenu=' . $item->object->mainmodule;
+					}
+					// On teste la présence de ? dans l'URI et on ajuste le séparateur
+					if (!empty($paramToadd)) {
+						$params .= (strpos($url, '?') !== false) ? "&" . $paramToadd : "?" . $paramToadd;
+					}
+					// Remplacer l'ancienne URL par la nouvelle dans la chaîne
+					$elem = preg_replace($pattern, '<a href="' . $url . $params . '"', $elem);
+				}
+				$divUNH .= '<li>' . $elem . '</li>';
+			}
+		}
+		$divUNH .= '</ol>';
+		$divStart = '<div class="usernavhistory">';
+		$divEnd = '</div>';
+		// Script JS injecté proprement dans une variable
+		$jsScript = "
+    <script>
+       // Cache la barre d'historique de navigation dans les popins
+       if (window.name == 'objectpreview') {
+          jQuery(document).ready(function () {
+             jQuery('.usernavhistory').hide();
+          });
+       }
+    </script>";
+		// Pour gérer le hookception et l'affichage direct
+		$this->resprints = $divStart . $divUNH . $divEnd . $jsScript;
+		return 1;
 	}
 }
