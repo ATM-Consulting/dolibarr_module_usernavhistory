@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-
+## 1.4
+- FIX : css margin changes in 20+ Dolibarr versions + background color - 09/12/2025 - 1.4.0
 
 ## 1.3
 - FIX : COMPAT V23 - *02/12/2025* - 1.3.5

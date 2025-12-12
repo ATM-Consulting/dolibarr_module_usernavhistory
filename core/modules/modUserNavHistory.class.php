@@ -72,7 +72,7 @@ class modUserNavHistory extends DolibarrModules
 		$this->editor_url = 'https://www.atm-consulting.fr';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.3.5';
+		$this->version = '1.4.0';
 		// Url to the file with your last numberversion of this module
 		require_once __DIR__ . '/../../class/techatm.class.php';
 		$this->url_last_version = \userNavHistory\TechATM::getLastModuleVersionUrl($this);
@@ -108,7 +108,7 @@ class modUserNavHistory extends DolibarrModules
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
 			'css' => array(
-				'/usernavhistory/css/usernavhistory.css',
+				'/usernavhistory/css/usernavhistory.css.php',
 			),
 			// Set this to relative path of js file if module must load a js on all pages
 			'js' => array(
