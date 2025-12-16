@@ -85,14 +85,21 @@ if (empty($dolibarr_nocache)) {
 
 
 $marginleft = 40;
-if(versioncompare(explode('.', DOL_VERSION), array(20)) >= 0) $marginleft = 42;
-if(versioncompare(explode('.', DOL_VERSION), array(21)) >= 0) $marginleft = 44;
+$marginright = 36;
+if(versioncompare(explode('.', DOL_VERSION), array(20)) >= 0) {
+	$marginleft = 42;
+	$marginright = 38;
+}
+if(versioncompare(explode('.', DOL_VERSION), array(21)) >= 0) {
+	$marginleft = 44;
+	$marginright = 38;
+}
 
 ?>
 
 .usernavhistory {
 	margin-left: -<?php print $marginleft ?>px;
-	margin-right: -36px;
+	margin-right: -<?php print $marginright ?>px;
 	margin-top: -14px;
 
 	display: grid;
@@ -123,10 +130,10 @@ if(versioncompare(explode('.', DOL_VERSION), array(21)) >= 0) $marginleft = 44;
 }
 
 
-.usernavhistory .breadcrumb img{
+.usernavhistory .breadcrumb img {
 	max-height: 16px;
 }
 
-.breadcrumb > li a img{
+.breadcrumb > li a img {
 	vertical-align: middle;
 }
