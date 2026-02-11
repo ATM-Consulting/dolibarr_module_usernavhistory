@@ -856,7 +856,7 @@ class UserNavHistory extends CommonObject
 	 *
 	 * @return string
 	 */
-	public function getElementType()
+	public function getElementType() :string
 	{
 		// Elements of the core modules having a `$module` property but for which we may not want to prefix the element name with the module name for finding the linked object in llx_element_element.
 		// It's because existing llx_element_element entries inserted prior to this modification (version <=14.2) may already use the element name alone in fk_source or fk_target (without the module name prefix).
