@@ -435,7 +435,7 @@ class UserNavHistory extends CommonObject
 		global $user, $conf;
 		$error = 0;
 		$this->db->begin();
-
+var_dump($userid, $elementid, $elementtype);
 		// We try to load the element in the user history to check if it's already existing
 		$res = $this->fetch(0, $userid, $elementid, $elementtype);
 
@@ -852,16 +852,27 @@ class UserNavHistory extends CommonObject
 		return '';
 	}
 	/**
-	 * Return an element type string formatted like element_element target_type and source_type
+	 * Get the standardized element type of an object.
 	 *
-	 * @return string
+	 * Equivalent to `CommonObject::getElementType()` (introduced in v20).
+	 *
+	 * Prefixes the element with the module name for external modules
+	 * to ensure unique identification.
+	 *
+	 * @param object $object Object with 'module' and 'element' properties.
+	 * @return string The formatted element type.
 	 */
-	public function getElementType() :string
+	public function getObjectElementType($object) :string
 	{
-		// Elements of the core modules having a `$module` property but for which we may not want to prefix the element name with the module name for finding the linked object in llx_element_element.
-		// It's because existing llx_element_element entries inserted prior to this modification (version <=14.2) may already use the element name alone in fk_source or fk_target (without the module name prefix).
-		$coreModule = array('knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization', 'asset');
-		// Add module part to target type if object has $module property and isn't in core modules.
-		return ((!empty($this->module) && !in_array($this->module, $coreModule)) ? $this->module.'_' : '').$this->element;
+		$coreModules = array('knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization');
+
+		if(!empty($object->module) && !in_array($object->module, $coreModules)){
+			$modulePrefix = $object->module . '_';
+			if(strpos($object->element, $modulePrefix) === false){
+				return $modulePrefix.$object->element;
+			}
+		}
+
+		return $object->element;
 	}
 }
