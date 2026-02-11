@@ -435,7 +435,7 @@ class UserNavHistory extends CommonObject
 		global $user, $conf;
 		$error = 0;
 		$this->db->begin();
-var_dump($userid, $elementid, $elementtype);
+
 		// We try to load the element in the user history to check if it's already existing
 		$res = $this->fetch(0, $userid, $elementid, $elementtype);
 
