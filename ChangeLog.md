@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ## 1.4
+- FIX : COMPAT < dolibarr v20 getElementType() - 16/12/2025 - 1.4.2
 - FIX : css margin-right in 20+ Dolibarr versions - 16/12/2025 - 1.4.1
 - FIX : css margin changes in 20+ Dolibarr versions + background color - 09/12/2025 - 1.4.0
 
