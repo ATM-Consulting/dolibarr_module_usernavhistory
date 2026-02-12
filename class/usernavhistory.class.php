@@ -851,4 +851,28 @@ class UserNavHistory extends CommonObject
 
 		return '';
 	}
+	/**
+	 * Get the standardized element type of an object.
+	 *
+	 * Equivalent to `CommonObject::getElementType()` (introduced in v20).
+	 *
+	 * Prefixes the element with the module name for external modules
+	 * to ensure unique identification.
+	 *
+	 * @param object $object Object with 'module' and 'element' properties.
+	 * @return string The formatted element type.
+	 */
+	public function getObjectElementType($object) :string
+	{
+		$coreModules = array('knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization');
+
+		if(!empty($object->module) && !in_array($object->module, $coreModules)){
+			$modulePrefix = $object->module . '_';
+			if(strpos($object->element, $modulePrefix) === false){
+				return $modulePrefix.$object->element;
+			}
+		}
+
+		return $object->element;
+	}
 }
